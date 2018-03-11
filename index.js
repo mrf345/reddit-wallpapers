@@ -49,7 +49,6 @@ export default function redditWallpapers (options={}) {
                 setInterval(setImage, self.options.duration)
             )
             setImage()
-            setImage()
         }).catch((err) => console.warn(err))
     }
 

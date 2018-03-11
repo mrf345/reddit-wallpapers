@@ -11,6 +11,13 @@ const Choice = (list) => {
 const CheckImg = (url) => {
     // Promise function to check if image is valid and loadable
     return new Promise((resolve, reject) => {
+        let types = ['png', 'jpg', 'gif']
+        let pass = false 
+        types = types.concat(types, types.map((t) => t.toUpperCase()))
+        for (let i in types) {
+            if (url.endsWith('.' + types[i]) || url.indexOf('.' + types[i]) !== -1) pass = true
+        }
+        if (!pass) reject('Error: wrong link ' + link)
         let img = new Image
         img.onload = (e) => {
             resolve(e)
