@@ -22,12 +22,12 @@
   },
   "homepage": "https://github.com/mrf345/reddit-wallpapers#readme",
   "dependencies": {
-    "babel-core": "^6.26.0",
-    "babel-minify-webpack-plugin": "^0.3.0",
-    "jquery": "^3.3.1",
-    "webpack": "^4.1.1"
+    "jquery": "^3.3.1"
   },
   "devDependencies": {
-    "webpack-cli": "^2.0.11"
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.11",
+    "babel-core": "^6.26.0",
+    "babel-minify-webpack-plugin": "^0.3.0"
   }
 }

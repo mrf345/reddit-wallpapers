@@ -13,14 +13,14 @@ export default function redditWallpapers (options={}) {
         ],
         data: [],
         loops: [],
-        index: -1,
+        index: 0,
         previousChoice: undefined
     }
 
     self.options = { // default options, if not provided
         id: options.id || '.reddit', // id or css class of element to wallpaper to
         category: options.category || self.categories, // Array of categories to choose from randomly
-        duration: options.duration || 5000, // duration of 5 seconds
+        duration: options.duration || 30000, // duration of 5 seconds
         aDuration: options.aDuration * 1000 || 1000, // transsition animation duration
         limit: options.limit || 30, // limit of json items
         timeout: options.timeout * 1000 || 5000, // request timeout in seconds
@@ -45,63 +45,65 @@ export default function redditWallpapers (options={}) {
         }).then((d) => {
             self.data = d.data.children
             self.loops.push(
-                setInterval(() => {
-                    self.index += 1
-                    if (self.index >= self.data.length - 1) {
-                        self.restart() // clearing loops and reinit
-                    } else {
-                        let image = self.data[self.index].data.url
-                        CheckImg(image).then(() => {
-                            $(self.options.id).stop().animate(
-                                self.options.isAnimated === 'true' ? {opacity: 0.4} : {opacity: 1},
-                                self.options.aDuration,
-                                function () {
-                                    let style = {
-                                        'width': '100%',
-                                        'background-size': 'cover',
-                                        'background-repeat': 'no-repeat',
-                                        'background-position': 'center'
-                                    }
-                                    style['background-image'] = self.options.isOverlayed === 'true' ? 'linear-gradient(' + self.options.overlay + ',' + self.options.overlay + '), url(' + image + ')' : 'url(' + image + ')'
-                                    if (self.options.isFixed === 'true') style['background-attachment'] = 'fixed'
-                                    $(this).css(style).animate(
-                                        {opacity: 1},
-                                        {duration: self.options.aDuration}
-                                    )
-                                }
-                            )
-                        }).catch((err) => {
-                            self.index += 1
-                        })
-                    }
-                }, self.options.duration)
+                setInterval(setImage, self.options.duration)
             )
+            setImage()
         }).catch((err) => console.warn(err))
     }
 
+    function setImage() {
+        self.index += 1
+        if (self.index >= self.data.length - 1) {
+            self.restart() // clearing loops and reinit
+        } else {
+            let image = self.data[self.index].data.url
+            CheckImg(image).then(() => {
+                $(self.options.id).stop().animate(
+                    self.options.isAnimated === 'true' ? {opacity: 0.4} : {opacity: 1},
+                    self.options.aDuration,
+                    function () {
+                        let style = {
+                            'width': '100%',
+                            'background-size': 'cover',
+                            'background-repeat': 'no-repeat',
+                            'background-position': 'center'
+                        }
+                        style['background-image'] = self.options.isOverlayed === 'true' ? 'linear-gradient(' + self.options.overlay + ',' + self.options.overlay + '), url(' + image + ')' : 'url(' + image + ')'
+                        if (self.options.isFixed === 'true') style['background-attachment'] = 'fixed'
+                        $(this).css(style).animate(
+                            {opacity: 1},
+                            {duration: self.options.aDuration}
+                        )
+                    }
+                )
+            }).catch((err) => {
+                self.index += 1
+            })
+        }
+    }
+
     self.next = () => {
-        // to set the next wallpaper in queue
+        // to set the next wallpaper
+        self.index += 1
+        setImage()
     }
 
     self.previous = () => {
-        // to set the previous wallpaper in queue
+        // to set the previous wallpaper
+        self.index -= 2
+        setImage()
     }
 
     self.stop = () => {
-        // to stop loop setting walpapers
-    }
-
-    self.resume = () => {
-        // to resume looping through wallpapers
+        // to stop looping through wallpapers
+        self.loops.forEach((l) => clearInterval(l))
     }
 
     self.restart = () => {
-        // to update the que of wallpapers and restart the loop
-        self.index = -1
+        // to update the que of wallpapers and restart looping through wallpapers
+        self.index = 0
         self.data = []
-        self.loops.forEach((l) => {
-            clearInterval(l)
-        })
+        self.loops.forEach((l) => clearInterval(l))
         self.loops = []
         __init__()
     }
