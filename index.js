@@ -79,7 +79,7 @@ export default function redditWallpapers (options={}) {
                     }
                 )
             }).catch((err) => {
-                self.index += 1
+                setImage()
             })
         }
     }
