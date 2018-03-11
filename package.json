@@ -1,0 +1,33 @@
+{
+  "name": "reddit-wallpapers",
+  "version": "0.0.1",
+  "description": "to help fetching wallpapers with reddit api and loop setting them",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrf345/reddit-wallpapers.git"
+  },
+  "keywords": [
+    "reddit",
+    "wallpaper",
+    "wallpapers"
+  ],
+  "author": "Mohamed Feddad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrf345/reddit-wallpapers/issues"
+  },
+  "homepage": "https://github.com/mrf345/reddit-wallpapers#readme",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-minify-webpack-plugin": "^0.3.0",
+    "jquery": "^3.3.1",
+    "webpack": "^4.1.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^2.0.11"
+  }
+}
