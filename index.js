@@ -20,7 +20,7 @@ export default function redditWallpapers (options={}) {
     self.options = { // default options, if not provided
         id: options.id || '.reddit', // id or css class of element to wallpaper to
         category: options.category || self.categories, // Array of categories to choose from randomly
-        duration: options.duration || 30000, // duration of 5 seconds
+        duration: options.duration || 10000, // duration of 5 seconds
         aDuration: options.aDuration * 1000 || 1000, // transsition animation duration
         limit: options.limit || 30, // limit of json items
         timeout: options.timeout * 1000 || 5000, // request timeout in seconds
