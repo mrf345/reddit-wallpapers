@@ -11,6 +11,7 @@ const Choice = (list) => {
 const CheckImg = (url) => {
     // Promise function to check if image is valid and loadable
     return new Promise((resolve, reject) => {
+        console.log('Applied the patch')
         let types = ['png', 'jpg', 'gif']
         let pass = false 
         types = types.concat(types, types.map((t) => t.toUpperCase()))
