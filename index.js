@@ -35,7 +35,6 @@ export default function redditWallpapers (options={}) {
         // To setup and initiate settings
         let currentChoice = self.previousChoice && self.isMixed === 'false' ? self.previousChoice : Choice(self.options.category)
         let link = 'https://www.reddit.com/r/' + currentChoice + '.json?limit=' + self.options.limit
-        console.log(link)
         new Promise((resolve, reject) => {
             fetch(link).then((resp) => {
                 setTimeout(() => reject(
@@ -58,7 +57,6 @@ export default function redditWallpapers (options={}) {
             self.restart() // clearing loops and reinit
         } else {
             let image = self.data[self.index].data.url
-            console.log(image)
             CheckImg(image).then(() => {
                 $(self.options.id).stop().animate(
                     self.options.isAnimated === 'true' ? {opacity: 0.3} : {opacity: 1},
