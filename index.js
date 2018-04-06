@@ -19,6 +19,7 @@ export default function redditWallpapers (options={}) {
 
     self.options = { // default options, if not provided
         id: options.id || '.reddit', // id or css class of element to wallpaper to
+        id_widthless: options.id_widthless || '.reddit_widthless', // id to use with for elements without width modification
         category: options.category || self.categories, // Array of categories to choose from randomly
         duration: options.duration * 1000 || 30000, // duration of 30 seconds
         aDuration: options.aDuration * 1000 || 500, // transsition animation duration
@@ -58,19 +59,29 @@ export default function redditWallpapers (options={}) {
         } else {
             let image = self.data[self.index].data.url
             CheckImg(image).then(() => {
+                let sstyle = {
+                    'background-size': 'cover',
+                    'background-repeat': 'no-repeat',
+                    'background-position': 'center',
+                }
+                sstyle['background-image'] = self.options.isOverlayed === 'true' ? 'linear-gradient(' + self.options.overlay + ',' + self.options.overlay + '), url(' + image + ')' : 'url(' + image + ')'
+                if (self.options.isFixed === 'true') sstyle['background-attachment'] = 'fixed'
+                let style = Object.assign(sstyle, {'width': '100%'})
                 $(self.options.id).stop().animate(
                     self.options.isAnimated === 'true' ? {opacity: 0.3} : {opacity: 1},
                     self.options.aDuration,
                     function () {
-                        let style = {
-                            'width': '100%',
-                            'background-size': 'cover',
-                            'background-repeat': 'no-repeat',
-                            'background-position': 'center'
-                        }
-                        style['background-image'] = self.options.isOverlayed === 'true' ? 'linear-gradient(' + self.options.overlay + ',' + self.options.overlay + '), url(' + image + ')' : 'url(' + image + ')'
-                        if (self.options.isFixed === 'true') style['background-attachment'] = 'fixed'
                         $(this).css(style).animate(
+                            {opacity: 1},
+                            {duration: self.options.aDuration}
+                        )
+                    }
+                )
+                $(self.options.id_widthless).stop().animate(
+                    self.options.isAnimated === 'true' ? {opacity: 0.3} : {opacity: 1},
+                    self.options.aDuration,
+                    function () {
+                        $(this).css(sstyle).animate(
                             {opacity: 1},
                             {duration: self.options.aDuration}
                         )
