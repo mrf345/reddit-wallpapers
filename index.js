@@ -13,7 +13,7 @@ export default function redditWallpapers (options={}) {
         ],
         data: [],
         loops: [],
-        index: 0,
+        index: parseInt(localStorage.redWallIndex) || 0,
         previousChoice: undefined
     }
 
@@ -54,7 +54,6 @@ export default function redditWallpapers (options={}) {
     }
 
     function setImage(defaultImage=false) {
-        if (!defaultImage) self.index += 1
         if (self.index >= self.data.length - 1 && !defaultImage) {
             self.restart() // clearing loops and reinit
         } else {
@@ -91,6 +90,8 @@ export default function redditWallpapers (options={}) {
             }).catch((err) => {
                 setImage()
             })
+            localStorage.redWallIndex = self.index + 1
+            self.index += 1
         }
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "reddit-wallpapers",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "to help fetching wallpapers with reddit api and loop setting them",
   "main": "index.js",
   "scripts": {
