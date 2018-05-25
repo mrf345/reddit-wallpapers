@@ -9,7 +9,7 @@ export default function redditWallpapers (options={}) {
         categories: [
             'EarthPorn', 'SpacePorn', 'Wallpapers', 'ExposurePorn',
             'SkyPorn', 'FractalPorn', 'ImaginaryTechnology',
-            'BridgePorn', 'wallpapers'
+            'BridgePorn', 'wallpapers', 'skylineporn', 'CityPorn'
         ],
         data: [],
         loops: [],
@@ -29,7 +29,8 @@ export default function redditWallpapers (options={}) {
         isOverlayed: options.isOverlayed || 'true', // to add overlay to the wallpaper
         isFixed: options.isFixed || 'false', // to set wallpaper to fixed position
         isMixed: options.isMixed || 'false', // to make sure wallpapers selected from mixed categories
-        isAnimated: options.isAnimated || 'true' // to use jQuery animation
+        isAnimated: options.isAnimated || 'true', // to use jQuery animation
+        defaultImg: options.defaultImg || '' // default image to use if failed
     }
 
     function __init__ () {
@@ -39,25 +40,25 @@ export default function redditWallpapers (options={}) {
         new Promise((resolve, reject) => {
             fetch(link).then((resp) => {
                 setTimeout(() => reject(
-                    new Error('reddit request tool too long, timed out')
+                    self.options.defaultImg === '' ? new Error('reddit request took too long, timed out') : setImage(true)
                 ), self.options.timeout)
                 return resp.json()
-            }).then((json) => resolve(json)).catch((err) => console.warn(err))
+            }).then((json) => resolve(json)).catch((err) => self.options.defaultImg === '' ? console.warn(err) : setImage(true))
         }).then((d) => {
             self.data = d.data.children
             self.loops.push(
                 setInterval(setImage, self.options.duration)
             )
             setImage()
-        }).catch((err) => console.warn(err))
+        }).catch((err) => self.options.defaultImg === '' ? console.warn(err) : setImage(true))
     }
 
-    function setImage() {
-        self.index += 1
-        if (self.index >= self.data.length - 1) {
+    function setImage(defaultImage=false) {
+        if (!defaultImage) self.index += 1
+        if (self.index >= self.data.length - 1 && !defaultImage) {
             self.restart() // clearing loops and reinit
         } else {
-            let image = self.data[self.index].data.url
+            let image = defaultImage ? self.options.defaultImg : self.data[self.index].data.url
             CheckImg(image).then(() => {
                 let sstyle = {
                     'background-size': 'cover',
