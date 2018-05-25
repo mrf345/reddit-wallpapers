@@ -13,7 +13,7 @@ export default function redditWallpapers (options={}) {
         ],
         data: [],
         loops: [],
-        index: parseInt(localStorage.redWallIndex) || 0,
+        index: parseInt(localStorage.redWallIndex) - 1 || 0,
         previousChoice: undefined
     }
 
@@ -38,12 +38,13 @@ export default function redditWallpapers (options={}) {
         let currentChoice = self.previousChoice && self.isMixed === 'false' ? self.previousChoice : Choice(self.options.category)
         let link = 'https://www.reddit.com/r/' + currentChoice + '.json?limit=' + self.options.limit
         new Promise((resolve, reject) => {
-            fetch(link).then((resp) => {
-                setTimeout(() => reject(
-                    self.options.defaultImg === '' ? new Error('reddit request took too long, timed out') : setImage(true)
-                ), self.options.timeout)
+            fetch(link)
+            .then((resp) => {
+                setTimeout(() => reject(false), self.options.timeout)
                 return resp.json()
-            }).then((json) => resolve(json)).catch((err) => self.options.defaultImg === '' ? console.warn(err) : setImage(true))
+            })
+            .then((json) => resolve(json))
+            .catch((err) => reject(false))
         }).then((d) => {
             self.data = d.data.children
             self.loops.push(
@@ -54,6 +55,8 @@ export default function redditWallpapers (options={}) {
     }
 
     function setImage(defaultImage=false) {
+        localStorage.redWallIndex = self.index + 1
+        self.index += 1
         if (self.index >= self.data.length - 1 && !defaultImage) {
             self.restart() // clearing loops and reinit
         } else {
@@ -90,8 +93,6 @@ export default function redditWallpapers (options={}) {
             }).catch((err) => {
                 setImage()
             })
-            localStorage.redWallIndex = self.index + 1
-            self.index += 1
         }
     }
 
