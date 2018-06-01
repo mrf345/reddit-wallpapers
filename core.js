@@ -8,7 +8,7 @@ const Choice = (list) => {
     return toreturn ? toreturn : list[0]
 }
 
-const CheckImg = (url) => {
+const CheckImg = (url, checkDim=false) => {
     // Promise function to check if image is valid and loadable
     return new Promise((resolve, reject) => {
         let types = ['png', 'jpg', 'gif']
@@ -20,7 +20,8 @@ const CheckImg = (url) => {
         if (!pass) reject('Error: wrong link ' + link)
         let img = new Image
         img.onload = (e) => {
-            resolve(e)
+            if (checkDim === 'true' && screen.height > img.height || screen.width > img.width) reject(e)
+            else resolve(e)
         }
         img.onerror = (e) => {
             reject(e)

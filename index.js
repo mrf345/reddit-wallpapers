@@ -30,7 +30,8 @@ export default function redditWallpapers (options={}) {
         isFixed: options.isFixed || 'false', // to set wallpaper to fixed position
         isMixed: options.isMixed || 'false', // to make sure wallpapers selected from mixed categories
         isAnimated: options.isAnimated || 'true', // to use jQuery animation
-        defaultImg: options.defaultImg || '' // default image to use if failed
+        defaultImg: options.defaultImg || '', // default image to use if failed
+        checkDim: options.checkDim || 'true', // make sure img dimensions larger than screen dimensions
     }
 
     function __init__ () {
@@ -61,7 +62,7 @@ export default function redditWallpapers (options={}) {
             self.restart() // clearing loops and reinit
         } else {
             let image = defaultImage ? self.options.defaultImg : self.data[self.index].data.url
-            CheckImg(image).then(() => {
+            CheckImg(image, self.options.checkDim).then(() => {
                 let sstyle = {
                     'background-size': 'cover',
                     'background-repeat': 'no-repeat',
