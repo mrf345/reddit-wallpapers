@@ -70,7 +70,7 @@ export default function redditWallpapers (options={}) {
                 }
                 sstyle['background-image'] = self.options.isOverlayed === 'true' ? 'linear-gradient(' + self.options.overlay + ',' + self.options.overlay + '), url(' + image + ')' : 'url(' + image + ')'
                 if (self.options.isFixed === 'true') sstyle['background-attachment'] = 'fixed'
-                let style = {...sstyle, 'width': '100%'}
+                let style = Object.assign({'width': '100%'}, sstyle)
                 $(self.options.id).stop().animate(
                     self.options.isAnimated === 'true' ? {opacity: 0.3} : {opacity: 1},
                     self.options.aDuration,
