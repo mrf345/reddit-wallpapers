@@ -1,0 +1,6 @@
+src/*
+dist/
+*.html
+*.config.*
+node_modules/
+*.json

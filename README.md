@@ -1,6 +1,6 @@
 # reddit-wallpapers (beta)
 
-### Script to help in fetching wallpapers from [Reddit API][023ff2ff] and loop setting them 
+#### Script to help in fetching wallpapers from [Reddit API][023ff2ff] and loop setting them.
 
   [023ff2ff]:
   https://www.reddit.com/dev/api/
@@ -8,19 +8,32 @@
 
 ## [Live Demo][0416ca12]
 
-  [0416ca12]: https://audio-sequence.github.io/reddit.html "Live demo of reddit-wallpapers"
+  [0416ca12]: https://mrf345.github.io/reddit-wallpapers/ "Live demo"
 
 
+## Install:
 
-## Setup:
+#### NPM: to bundle it however you like:
+- To install it:
+`npm i reddit-wallpapers --save`
+- To import it:
+```javascript
+// ES5
+const RedditWallpapers = require('reddit-wallpapers').default
 
+// ES6
+import RedditWallpapers from 'reddit-wallpapers'
+```
+
+#### Browser:
+- You can get the latest bundle from [here](https://mrf345.github.io/reddit-wallpapers/dist/RedditWallpapers.min.js)
+- Example:
 ```html
 <head>
-  <script src='bundle.js' type='text/javascript'></script>
+  <script src="https://mrf345.github.io/reddit-wallpapers/dist/RedditWallpapers.min.js"></script>
   <script type='text/javascript'>
-    var WManager = redditWallpapers({
-      id: '.toChange'
-    })
+    var options = {id: '.toChange'}
+    var WManager = RedditWallpapers(options)
   </script>
 </head>
 <body>
@@ -48,21 +61,14 @@ self.options = { // default options, if not provided
 }
 ```
 
-## Functions:
+## Support:
+Should work with anything newer than `Internet Explorer 10` and `NodeJS 10`.
 
-#### To use any of the following functions, you have to get an instance of the constructor, which we did in the Setup section :
-` var WManager = redditWallpapers()` </br>
-` WManager.following_functions()`
-
+## Interface:
 
 Function | Describtion
 ---------|----------------
- next() | set the next wallpaper
- previous() | set the previous wallpaper
- stop() | stop loop setting wallpapers
- restart() | reset settings to default and restart looping
-
-
-## Dependencies:
-> - jQuery
-
+ `WManager.next()` | set the next wallpaper
+ `WManager.previous()` | set the previous wallpaper
+ `WManager.stop()` | stop loop setting wallpapers
+ `WManager.restart()` | reset settings to default and restart intervals
